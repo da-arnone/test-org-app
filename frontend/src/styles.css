@@ -1,0 +1,258 @@
+.org-app {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  max-width: 1080px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #222;
+}
+
+.org-app header {
+  border: 1px solid #e4e8f0;
+  background: linear-gradient(180deg, #fbfcff 0%, #f6f8fc 100%);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  position: sticky;
+  top: 0.6rem;
+  z-index: 5;
+}
+
+.org-app header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+}
+
+.org-app .status-line {
+  margin: 0 0 0.75rem;
+  color: #444;
+}
+
+.org-app .top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.org-app .organization-picker {
+  margin: 0.75rem 0 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.9rem;
+}
+
+.org-app .organization-picker .status-line {
+  margin: 0;
+}
+
+.org-app .org-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #eaf2ff;
+  border: 1px solid #c6dbff;
+  color: #21426d;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  font-size: 0.9rem;
+}
+
+.org-app nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.org-app nav a {
+  color: #234264;
+  text-decoration: none;
+  font-weight: 500;
+  border: 1px solid #d4deee;
+  border-radius: 8px;
+  padding: 0.3rem 0.75rem;
+  background: #fff;
+}
+
+.org-app nav a:hover {
+  border-color: #9eb8df;
+}
+
+.org-app nav a.active {
+  background: #2f67b2;
+  color: #fff;
+  border-color: #2f67b2;
+}
+
+.org-app table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  background: #fff;
+}
+
+.org-app th,
+.org-app td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+.org-app dl {
+  display: grid;
+  grid-template-columns: max-content auto;
+  gap: 0.25rem 1rem;
+  margin: 0 0 1rem;
+}
+
+.org-app dt { font-weight: 600; }
+.org-app dd { margin: 0; }
+
+.org-app textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.5rem;
+  border: 1px solid #bbb;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.org-app input,
+.org-app select {
+  font: inherit;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #aebacf;
+  border-radius: 6px;
+  min-width: 18rem;
+}
+
+.org-app button {
+  font: inherit;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #b8c2d4;
+  background: #f8faff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.org-app button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.org-app .error {
+  color: #b00;
+  background: #fee;
+  border: 1px solid #fbb;
+  padding: 0.5rem 0.75rem;
+  border-radius: 3px;
+}
+
+.org-app .hint {
+  color: #555;
+  background: #f7f7f7;
+  border: 1px solid #e6e6e6;
+  padding: 0.6rem 0.8rem;
+  border-radius: 4px;
+}
+
+.org-app label {
+  font-weight: 600;
+}
+
+.org-app .contracts-center {
+  max-width: 860px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #e4e8f0;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 1px 3px rgba(14, 36, 78, 0.06);
+}
+
+.org-app .contracts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.org-app .contracts-header h2 {
+  margin: 0;
+}
+
+.org-app .contracts-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #355077;
+  background: #edf3ff;
+  border: 1px solid #cadeff;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+.org-app .contracts-subtitle {
+  margin-top: 0.35rem;
+  color: #4b5b76;
+}
+
+.org-app .table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid #e4e8f0;
+}
+
+.org-app .admin-panel {
+  margin: 1rem 0;
+  border: 1px dashed #b8c8e3;
+  background: #f8fbff;
+  border-radius: 10px;
+  padding: 0.75rem 0.9rem;
+}
+
+.org-app .admin-panel h3 {
+  margin: 0 0 0.5rem;
+  color: #234264;
+}
+
+.org-app .row-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.org-app .inline-input {
+  min-width: 10rem;
+}
+
+.org-app button.danger {
+  border-color: #d17f7f;
+  background: #fff3f3;
+  color: #8d1c1c;
+}
+
+.org-app th {
+  background: #f4f7fc;
+  color: #2c476a;
+}
+
+.org-app tbody tr:nth-child(2n) {
+  background: #fcfdff;
+}
+
+.org-app tbody tr:hover {
+  background: #eef5ff;
+}
+
+@media (max-width: 720px) {
+  .org-app .top-bar {
+    flex-wrap: wrap;
+  }
+
+  .org-app input,
+  .org-app select {
+    min-width: 100%;
+  }
+}

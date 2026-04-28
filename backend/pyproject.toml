@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "org-app"
+version = "0.1.0"
+description = "DDQ Ecosystem — org-app (organisations and contracts)"
+requires-python = ">=3.10"
+dependencies = [
+    "Django>=4.2,<6.0",
+    "djangorestframework>=3.14",
+]
+
+[project.optional-dependencies]
+dev = [
+    "django-cors-headers>=4.3",
+]
+
+[tool.setuptools.packages.find]
+include = ["org_app*"]

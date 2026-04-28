@@ -1,0 +1,9 @@
+services:
+  org-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_SETTINGS_MODULE: dev_project.settings

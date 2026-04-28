@@ -1,0 +1,49 @@
+[
+  {"model": "org_app.organization", "pk": 1, "fields": {"name": "Acme Corp"}},
+  {"model": "org_app.organization", "pk": 2, "fields": {"name": "TechStart Inc"}},
+  {"model": "org_app.organization", "pk": 3, "fields": {"name": "Global Services Ltd"}},
+  {
+    "model": "org_app.contract",
+    "pk": 1,
+    "fields": {
+      "ref": "C-2025-001",
+      "creation_date": "2025-01-01",
+      "user": "alice",
+      "description": "Software development agreement — full-stack services for the web platform.",
+      "organization": 1
+    }
+  },
+  {
+    "model": "org_app.contract",
+    "pk": 2,
+    "fields": {
+      "ref": "C-2025-002",
+      "creation_date": "2025-02-15",
+      "user": "bob",
+      "description": "Cloud infrastructure setup — AWS migration.",
+      "organization": 1
+    }
+  },
+  {
+    "model": "org_app.contract",
+    "pk": 3,
+    "fields": {
+      "ref": "C-2025-003",
+      "creation_date": "2025-01-15",
+      "user": "carol",
+      "description": "Consulting services for Q2 2025.",
+      "organization": 2
+    }
+  },
+  {
+    "model": "org_app.contract",
+    "pk": 4,
+    "fields": {
+      "ref": "C-2025-004",
+      "creation_date": "2025-06-01",
+      "user": "dave",
+      "description": "Data analysis project — analytics pipeline and dashboard.",
+      "organization": 3
+    }
+  }
+]

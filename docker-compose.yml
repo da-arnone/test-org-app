@@ -1,9 +1,27 @@
 services:
-  app:
-    build: .
+  org-app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    env_file:
+      - ./.env
     ports:
-      - "8000:8000"
-    volumes:
-      - ./frontend:/app/frontend
+      - "${ORG_BACKEND_PORT:-8000}:8000"
     environment:
-      - PYTHONUNBUFFERED=1
+      DJANGO_SETTINGS_MODULE: dev_project.settings
+  frontend:
+    image: node:20-alpine
+    working_dir: /app/frontend
+    command: sh -c "npm install && npm start"
+    volumes:
+      - .:/app
+      - frontend_node_modules:/app/frontend/node_modules
+    environment:
+      BACKEND_URL: http://org-app:8000
+    depends_on:
+      - org-app
+    ports:
+      - "${ORG_FRONTEND_PORT:-3001}:3001"
+
+volumes:
+  frontend_node_modules:
