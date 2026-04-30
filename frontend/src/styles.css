@@ -246,6 +246,19 @@
   background: #eef5ff;
 }
 
+.org-app tbody tr.row-selected {
+  background: #e9f2ff;
+}
+
+.org-app pre {
+  background: #f6f8fc;
+  border: 1px solid #d9e2f0;
+  border-radius: 8px;
+  padding: 0.7rem;
+  overflow-x: auto;
+  max-height: 22rem;
+}
+
 @media (max-width: 720px) {
   .org-app .top-bar {
     flex-wrap: wrap;

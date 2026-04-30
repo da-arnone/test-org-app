@@ -66,6 +66,16 @@ shortcut for what will eventually be carried in the auth-app JWT).
 - `GET /api/org/contracts/` — contracts of the current organisation
 - `GET /api/org/contracts/<id>/`
 - `PATCH /api/org/contracts/<id>/` — only `description` is writable
+- `GET /api/org/providers/` — public providers from provider-app third surface
+- `GET /api/org/providers/<id>/` — public provider details
+- `GET /api/org/providers/<id>/forms/` — public provider forms (proxy of provider-app third surface)
+- `GET /api/org/providers/<id>/answers/` — provider answers for selected provider (includes private answers when provider-app authorizes current org)
+- `GET /api/org/subscriptions/requests/` — subscription requests for current org (proxies subscription-app third API)
+- `POST /api/org/subscriptions/requests/create/` — body: `{ "provider_id": <int>, "requested_private_fields": [...], "reason": "..." }`
+  - org-app maps this into the generic subscription contract:
+    `{ "submitting_entity_id": <org_id>, "submitting_entity_type": "organization", "submitee_entity_id": <provider_id>, "submitee_entity_type": "provider", ... }`
+
+Set `SUBSCRIPTION_APP_URL` (or legacy `SUSCRIPTION_APP_URL`, default `http://localhost:8003`) so org-app can reach **subscription-app**.
 
 ### Third (`/third/org/`) — cross-component
 
@@ -146,6 +156,31 @@ $env:AUTH_APP_URL="http://localhost:3000"
 ```
 
 Default is `http://localhost:3000`.
+
+Provider consultation requires provider-app base URL:
+
+```bash
+# Windows PowerShell
+$env:PROVIDER_APP_URL="http://localhost:8002"
+```
+
+Default is `http://localhost:8002`.
+
+When org-app runs in Docker and provider-app runs on the host (or another
+compose project), use:
+
+```bash
+PROVIDER_APP_URL=http://host.docker.internal:8002
+```
+
+Optional provider client debug logs:
+
+```bash
+# Windows PowerShell
+$env:PROVIDER_CLIENT_DEBUG="true"
+```
+
+When enabled, org-app backend logs outbound provider-app request URLs and status codes.
 
 ### Run both services independently
 

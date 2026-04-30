@@ -9,6 +9,9 @@ services:
       - "${ORG_BACKEND_PORT:-8000}:8000"
     environment:
       DJANGO_SETTINGS_MODULE: dev_project.settings
+      AUTH_APP_URL: "${AUTH_APP_URL:-http://host.docker.internal:8001}"
+      PROVIDER_APP_URL: "${PROVIDER_APP_URL:-http://host.docker.internal:8002}"
+      SUBSCRIPTION_APP_URL: "${SUBSCRIPTION_APP_URL:-http://host.docker.internal:8003}"
   frontend:
     image: node:20-alpine
     working_dir: /app/frontend

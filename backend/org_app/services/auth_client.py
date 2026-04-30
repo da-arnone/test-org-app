@@ -15,6 +15,7 @@ from urllib import error, request as urlrequest
 
 AUTH_APP_URL = os.getenv("AUTH_APP_URL", "http://localhost:8001").rstrip("/")
 ALLOWED_ORG_ROLES = {"org-app", "org-admin"}
+PROVIDER_READ_PROFILE = {"appScope": "provider-app", "role": "provider-third"}
 
 
 def extract_bearer_token(request) -> Optional[str]:
@@ -140,3 +141,41 @@ def current_org_id(request, token: Optional[str] = None) -> Optional[int]:
     if token:
         return _org_context_from_whois(token)
     return None
+
+
+def has_provider_third_profile(token: str) -> bool:
+    data = whois(token)
+    if not data:
+        return False
+    profiles = data.get("profiles") or []
+    for profile in profiles:
+        if (
+            profile.get("appScope") == PROVIDER_READ_PROFILE["appScope"]
+            and profile.get("role") == PROVIDER_READ_PROFILE["role"]
+        ):
+            return True
+    return False
+
+
+def provider_ids_for_third_consultation(token: str) -> list[int]:
+    data = whois(token)
+    if not data:
+        return []
+    profiles = data.get("profiles") or []
+    provider_ids = []
+    for profile in profiles:
+        if profile.get("appScope") != PROVIDER_READ_PROFILE["appScope"]:
+            continue
+        if profile.get("role") != PROVIDER_READ_PROFILE["role"]:
+            continue
+        context = profile.get("context")
+        if context is None:
+            continue
+        if isinstance(context, int):
+            provider_ids.append(context)
+            continue
+        if isinstance(context, str):
+            digits = "".join(ch for ch in context if ch.isdigit())
+            if digits:
+                provider_ids.append(int(digits))
+    return sorted(set(provider_ids))

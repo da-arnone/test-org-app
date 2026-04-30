@@ -24,6 +24,16 @@ from ..services.auth_client import (
     validate_token,
     whois,
 )
+from ..services.provider_client import (
+    get_provider,
+    list_provider_answers,
+    list_provider_forms,
+    list_providers,
+)
+from ..services.subscription_client import (
+    create_subscription_request,
+    list_subscription_requests,
+)
 
 
 def _require_authorized_org_context(request):
@@ -63,6 +73,17 @@ def _require_authorized_org_context(request):
             None,
         )
     return org_id, None, claims
+
+
+def _require_provider_consultation_access(request):
+    org_id, error, _claims = _require_authorized_org_context(request)
+    if error:
+        return None, None, error
+
+    token = extract_bearer_token(request)
+    if not token:
+        return None, None, Response({"detail": "missing bearer token"}, status=401)
+    return org_id, token, None
 
 
 class LoginView(APIView):
@@ -184,3 +205,117 @@ class ContractDetailView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(ContractSerializer(contract).data)
+
+
+class ProviderListView(APIView):
+    """Read-only public provider list proxied from provider-app."""
+
+    def get(self, request):
+        org_id, token, error = _require_provider_consultation_access(request)
+        if error:
+            return error
+        payload, status_code, detail = list_providers(token, organization_id=org_id)
+        if status_code:
+            return Response({"detail": detail or "failed to fetch providers"}, status=status_code)
+        return Response(payload)
+
+
+class ProviderDetailView(APIView):
+    """Read-only public provider details proxied from provider-app."""
+
+    def get(self, request, provider_id):
+        org_id, token, error = _require_provider_consultation_access(request)
+        if error:
+            return error
+        payload, status_code, detail = get_provider(
+            token,
+            provider_id,
+            organization_id=org_id,
+        )
+        if status_code:
+            return Response({"detail": detail or "failed to fetch provider"}, status=status_code)
+        return Response(payload)
+
+
+class ProviderFormsView(APIView):
+    """Read-only public provider forms proxied from provider-app."""
+
+    def get(self, request, provider_id):
+        org_id, token, error = _require_provider_consultation_access(request)
+        if error:
+            return error
+        payload, status_code, detail = list_provider_forms(
+            token,
+            provider_id,
+            organization_id=org_id,
+        )
+        if status_code:
+            return Response(
+                {"detail": detail or "failed to fetch provider forms"},
+                status=status_code,
+            )
+        return Response(payload)
+
+
+class ProviderAnswersView(APIView):
+    """Provider answers proxied from provider-app (private answers when authorized)."""
+
+    def get(self, request, provider_id):
+        org_id, token, error = _require_provider_consultation_access(request)
+        if error:
+            return error
+        payload, status_code, detail = list_provider_answers(
+            token,
+            provider_id,
+            organization_id=org_id,
+            include_private=True,
+        )
+        if status_code:
+            return Response(
+                {"detail": detail or "failed to fetch provider answers"},
+                status=status_code,
+            )
+        return Response(payload)
+
+
+class SubscriptionRequestListView(APIView):
+    """List subscription requests for the current organisation (proxied to subscription-app)."""
+
+    def get(self, request):
+        org_id, token, error = _require_provider_consultation_access(request)
+        if error:
+            return error
+        payload, status_code, detail = list_subscription_requests(token, organization_id=org_id)
+        if status_code:
+            return Response(
+                {"detail": detail or "failed to fetch subscription requests"},
+                status=status_code,
+            )
+        return Response(payload)
+
+
+class SubscriptionRequestCreateView(APIView):
+    """Create a subscription request for private provider data (proxied to subscription-app)."""
+
+    def post(self, request):
+        org_id, token, error = _require_provider_consultation_access(request)
+        if error:
+            return error
+        provider_id = request.data.get("provider_id")
+        if provider_id is None:
+            return Response({"detail": "provider_id is required"}, status=400)
+        body = {
+            "submitting_entity_id": org_id,
+            "submitting_entity_type": "organization",
+            "submitee_entity_id": int(provider_id),
+            "submitee_entity_type": "provider",
+            "requested_private_fields": request.data.get("requested_private_fields") or [],
+            "reason": request.data.get("reason", ""),
+        }
+        payload, status_code, detail = create_subscription_request(token, body)
+        if status_code:
+            return Response(
+                {"detail": detail or "failed to create subscription request"},
+                status=status_code,
+            )
+        return Response(payload, status=201)

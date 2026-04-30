@@ -29,6 +29,22 @@ export const api = {
   contracts: (organizationId, token) => request('/api/org/contracts/', { organizationId, token }),
   contract: (id, organizationId, token) =>
     request(`/api/org/contracts/${id}/`, { organizationId, token }),
+  providers: (organizationId, token) => request('/api/org/providers/', { organizationId, token }),
+  provider: (id, organizationId, token) =>
+    request(`/api/org/providers/${id}/`, { organizationId, token }),
+  providerForms: (id, organizationId, token) =>
+    request(`/api/org/providers/${id}/forms/`, { organizationId, token }),
+  providerAnswers: (id, organizationId, token) =>
+    request(`/api/org/providers/${id}/answers/`, { organizationId, token }),
+  subscriptionRequests: (organizationId, token) =>
+    request('/api/org/subscriptions/requests/', { organizationId, token }),
+  createSubscriptionRequest: (body, organizationId, token) =>
+    request('/api/org/subscriptions/requests/create/', {
+      method: 'POST',
+      organizationId,
+      token,
+      body: JSON.stringify(body),
+    }),
   updateContract: (id, body, organizationId, token) =>
     request(`/api/org/contracts/${id}/`, {
       method: 'PATCH',

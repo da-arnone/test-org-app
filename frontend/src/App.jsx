@@ -3,6 +3,7 @@ import { NavLink, Navigate, Route, Routes } from 'react-router-dom';
 import OrganizationPage from './pages/OrganizationPage';
 import ContractsPage from './pages/ContractsPage';
 import ContractDetailPage from './pages/ContractDetailPage';
+import ProvidersPage from './pages/ProvidersPage';
 import { api } from './api';
 import './styles.css';
 
@@ -191,6 +192,9 @@ export default function App() {
           <NavLink to="organization" className={({ isActive }) => (isActive ? 'active' : '')}>
             Organization
           </NavLink>
+          <NavLink to="providers" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Providers
+          </NavLink>
         </nav>
       </header>
       <main>
@@ -226,6 +230,16 @@ export default function App() {
             path="contracts/:id"
             element={
               <ContractDetailPage
+                organizationId={organizationId}
+                allowedOrganizationIds={sessionUser.organizationIds || []}
+                token={token}
+              />
+            }
+          />
+          <Route
+            path="providers"
+            element={
+              <ProvidersPage
                 organizationId={organizationId}
                 allowedOrganizationIds={sessionUser.organizationIds || []}
                 token={token}
